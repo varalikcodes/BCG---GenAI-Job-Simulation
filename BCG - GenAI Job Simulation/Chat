@@ -1,0 +1,61 @@
+# Sample financial data as a dictionary (could also load from a CSV)
+financial_data = {
+    'Microsoft': {
+        'total_revenue': 211915,
+        'net_income_change': 'increased by 7% from 2022 to 2023',
+        'debt_to_asset': 0.55,
+        'cash_flow': 87484,
+        'cagr': '5.3%'
+    },
+    'Tesla': {
+        'total_revenue': 81462,
+        'net_income_change': 'increased by 128% from 2021 to 2022',
+        'debt_to_asset': 0.68,
+        'cash_flow': 14724,
+        'cagr': '39%'
+    },
+    'Apple': {
+        'total_revenue': 383285,
+        'net_income_change': 'decreased by 2% from 2022 to 2023',
+        'debt_to_asset': 0.70,
+        'cash_flow': 110543,
+        'cagr': '4.9%'
+    }
+}
+
+def smart_chatbot(user_query):
+    user_query = user_query.lower()
+    
+    # Detect company name
+    companies = ['microsoft', 'tesla', 'apple']
+    company = next((c for c in companies if c in user_query), None)
+    
+    if company:
+        company_data = financial_data[company.capitalize()]
+        
+        if 'total revenue' in user_query:
+            return f"{company.capitalize()}'s total revenue is ${company_data['total_revenue']} million."
+        
+        elif 'net income' in user_query:
+            return f"{company.capitalize()}'s net income has {company_data['net_income_change']}."
+        
+        elif 'debt' in user_query or 'leverage' in user_query:
+            return f"{company.capitalize()}'s debt-to-asset ratio is {company_data['debt_to_asset']}."
+        
+        elif 'cash flow' in user_query:
+            return f"{company.capitalize()} generated ${company_data['cash_flow']} million in operating cash flow."
+        
+        elif 'cagr' in user_query:
+            return f"{company.capitalize()}'s revenue CAGR is {company_data['cagr']} over the last 3 years."
+        
+        else:
+            return f"I found {company.capitalize()}, but couldn’t match the query to a known metric."
+    else:
+        return "Please mention a company (Apple, Tesla, or Microsoft) and a financial metric (e.g., 'total revenue', 'net income', etc.)"
+
+# Example chatbot interaction loop
+while True:
+    query = input("Ask me about Apple, Tesla, or Microsoft (type 'exit' to quit): ")
+    if query.lower() == 'exit':
+        break
+    print(smart_chatbot(query))
